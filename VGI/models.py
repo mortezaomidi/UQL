@@ -1,6 +1,7 @@
+from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.gis.db import models as geomodel
 
-
+@python_2_unicode_compatible  # only if you need to support Python 2
 class Criteria(geomodel.Model):
 
     Q1 = (
@@ -84,3 +85,7 @@ class Criteria(geomodel.Model):
         return self.q31 + self.q32 + self.q33 + self.q34 + self.q35 + self.q36 \
             + self.q37 + self.q38 + self.q39 + self.q310 + self.q311 + self.q312 \
             + self.q313 + self.q314 + self.q315 + self.q316 + self.q317
+
+    def __str__(self):
+        return "Sum of Enviromental: " + str(self.sum_q1) + " Sum of Socio-economical: " + \
+        str(self.sum_q2) + " Sum of Phisical: " + str(self.sum_q3)
