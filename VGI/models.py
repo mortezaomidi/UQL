@@ -56,7 +56,7 @@ class Criteria(geomodel.Model):
 
     @property
     def sum_q2(self):
-        return self.q21 + self.q22 + self.q23 + self.q24 + self.q25
+        return self.q21 + self.q22 + self.q23 + self.q24 + self.q25 \
          + self.q26 + self.q27 + self.q28 + self.q29 + self.q210
 
     # Phisical Criteria
@@ -78,3 +78,9 @@ class Criteria(geomodel.Model):
     q315 = geomodel.PositiveSmallIntegerField(choices=Q3, verbose_name=None)
     q316 = geomodel.PositiveSmallIntegerField(choices=Q3, verbose_name=None)
     q317 = geomodel.PositiveSmallIntegerField(choices=Q3, verbose_name=None)
+
+    @property
+    def sum_q3(self):
+        return self.q31 + self.q32 + self.q33 + self.q34 + self.q35 + self.q36 \
+            + self.q37 + self.q38 + self.q39 + self.q310 + self.q311 + self.q312 \
+            + self.q313 + self.q314 + self.q315 + self.q316 + self.q317
