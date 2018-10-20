@@ -1,8 +1,17 @@
 from django.utils.encoding import python_2_unicode_compatible
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geomodel
+
+class MyUser(AbstractUser):
+    is_citizen = geomodel.BooleanField(default=False)
+    is_expert = geomodel.BooleanField(default=False)
+    is_admin = geomodel.BooleanField(default=False)
+
 
 @python_2_unicode_compatible  # only if you need to support Python 2
 class Criteria(geomodel.Model):
+    user = geomodel.OneToOneField(MyUser, on_delete=geomodel.CASCADE)
 
     Q1 = (
         (1, "Negligible"),
@@ -87,5 +96,6 @@ class Criteria(geomodel.Model):
             + self.q313 + self.q314 + self.q315 + self.q316 + self.q317
 
     def __str__(self):
-        return "Sum of Enviromental: " + str(self.sum_q1) + " Sum of Socio-economical: " + \
+        return "Sum of Enviromental: " + str(self.sum_q1) + \
+        " Sum of Socio-economical: " + \
         str(self.sum_q2) + " Sum of Phisical: " + str(self.sum_q3)
