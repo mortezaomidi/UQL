@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'VGI',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,9 @@ ROOT_URLCONF = 'UQL.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,3 +129,6 @@ STATIC_URL = '/static/'
 
 # custom user model for authentication
 AUTH_USER_MODEL = 'VGI.MyUser'
+
+# crispy-forms setting
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

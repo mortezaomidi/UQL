@@ -1,17 +1,19 @@
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.contrib.gis.db import models as geomodel
 
+
 class MyUser(AbstractUser):
-    is_citizen = geomodel.BooleanField(default=False)
-    is_expert = geomodel.BooleanField(default=False)
-    is_admin = geomodel.BooleanField(default=False)
+    is_citizen = geomodel.BooleanField(default=False, help_text="Designates is the user citizen.")
+    is_expert = geomodel.BooleanField(default=False, help_text="Designates is the user expert.")
+    is_admin = geomodel.BooleanField(default=False, help_text="Designates is the user admin.")
 
 
 @python_2_unicode_compatible  # only if you need to support Python 2
 class Criteria(geomodel.Model):
-    user = geomodel.OneToOneField(MyUser, on_delete=geomodel.CASCADE)
+    user = geomodel.ForeignKey(MyUser, on_delete=geomodel.CASCADE)
 
     Q1 = (
         (1, "Negligible"),
@@ -94,6 +96,9 @@ class Criteria(geomodel.Model):
         return self.q31 + self.q32 + self.q33 + self.q34 + self.q35 + self.q36 \
             + self.q37 + self.q38 + self.q39 + self.q310 + self.q311 + self.q312 \
             + self.q313 + self.q314 + self.q315 + self.q316 + self.q317
+
+    def get_absolute_url(self):
+        return reverse('home', kwargs={'pk': self.pk})
 
     def __str__(self):
         return "Sum of Enviromental: " + str(self.sum_q1) + \
