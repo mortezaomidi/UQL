@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.gis.db import models as geomodel
 
+my_srid = 4326
 
 class MyUser(AbstractUser):
     is_citizen = geomodel.BooleanField(default=False, help_text="Designates is the user citizen.")
@@ -11,7 +12,6 @@ class MyUser(AbstractUser):
     is_admin = geomodel.BooleanField(default=False, help_text="Designates is the user admin.")
 
 
-my_srid = 4326
 class Region(geomodel.Model):
     name = geomodel.CharField(max_length=50)
     geom = geomodel.MultiPolygonField(srid=my_srid)
@@ -23,11 +23,11 @@ class Unit(geomodel.Model):
     region = geomodel.ForeignKey(Region, on_delete=geomodel.CASCADE)
 
 
-
 @python_2_unicode_compatible  # only if you need to support Python 2
 class Criteria(geomodel.Model):
     user = geomodel.ForeignKey(MyUser, on_delete=geomodel.CASCADE)
     geom = geomodel.PointField(srid=4326)
+    unit = geomodel.ForeignKey(Unit, on_delete=geomodel.CASCADE)
 
     Q1 = (
         (1, "Negligible"),
@@ -113,6 +113,10 @@ class Criteria(geomodel.Model):
 
     def get_absolute_url(self):
         return reverse('home', kwargs={'pk': self.pk})
+
+    def save(self, *args, **kwargs):
+        self.unit = Unit.objects.get(geom__contains=Unit.objects.get(geom__contains=self.geom).geom)
+        super(Criteria, self).save(*args, **kwargs)
 
     def __str__(self):
         return "Sum of Enviromental: " + str(self.sum_q1) + \
