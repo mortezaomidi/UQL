@@ -11,9 +11,23 @@ class MyUser(AbstractUser):
     is_admin = geomodel.BooleanField(default=False, help_text="Designates is the user admin.")
 
 
+my_srid = 4326
+class Region(geomodel.Model):
+    name = geomodel.CharField(max_length=50)
+    geom = geomodel.MultiPolygonField(srid=my_srid)
+
+
+class Unit(geomodel.Model):
+    name = geomodel.CharField(max_length=50)
+    geom = geomodel.MultiPolygonField(srid=my_srid)
+    region = geomodel.ForeignKey(Region, on_delete=geomodel.CASCADE)
+
+
+
 @python_2_unicode_compatible  # only if you need to support Python 2
 class Criteria(geomodel.Model):
     user = geomodel.ForeignKey(MyUser, on_delete=geomodel.CASCADE)
+    geom = geomodel.PointField(srid=4326)
 
     Q1 = (
         (1, "Negligible"),
