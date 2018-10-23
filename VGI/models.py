@@ -2,9 +2,10 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.gis.db import models as geomodel
 
-my_srid = 4326
+my_srid = 32639
 
 class MyUser(AbstractUser):
     is_citizen = geomodel.BooleanField(default=False, help_text="Designates is the user citizen.")
@@ -13,14 +14,22 @@ class MyUser(AbstractUser):
 
 
 class Region(geomodel.Model):
-    name = geomodel.CharField(max_length=50)
+    name = geomodel.CharField(max_length=50, blank=True, null=True)
+    reg_code = geomodel.PositiveIntegerField(primary_key=True)
     geom = geomodel.MultiPolygonField(srid=my_srid)
+
+    def __str__(self):
+        return str(self.reg_code)
 
 
 class Unit(geomodel.Model):
-    name = geomodel.CharField(max_length=50)
+    name = geomodel.CharField(max_length=50, blank=True, null=True)
+    unit_code = geomodel.PositiveIntegerField()
     geom = geomodel.MultiPolygonField(srid=my_srid)
     region = geomodel.ForeignKey(Region, on_delete=geomodel.CASCADE)
+
+    def __str__(self):
+        return str(self.unit_code)
 
 
 @python_2_unicode_compatible  # only if you need to support Python 2
