@@ -2,6 +2,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.gis.db import models as geomodel
 
@@ -35,8 +36,9 @@ class Unit(geomodel.Model):
 @python_2_unicode_compatible  # only if you need to support Python 2
 class Criteria(geomodel.Model):
     user = geomodel.ForeignKey(MyUser, on_delete=geomodel.CASCADE)
-    geom = geomodel.PointField(srid=4326)
+    geom = geomodel.PointField(srid=my_srid)
     unit = geomodel.ForeignKey(Unit, on_delete=geomodel.CASCADE)
+    create_date = geomodel.DateTimeField(auto_now_add=True, null=True)
 
     Q1 = (
         (1, "Negligible"),
@@ -131,3 +133,6 @@ class Criteria(geomodel.Model):
         return "Sum of Enviromental: " + str(self.sum_q1) + \
         " Sum of Socio-economical: " + \
         str(self.sum_q2) + " Sum of Phisical: " + str(self.sum_q3)
+
+    class Meta:
+        ordering = ('-create_date',)
