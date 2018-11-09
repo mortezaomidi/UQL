@@ -1,4 +1,5 @@
 from django.contrib.gis import forms as geoforms
+from leaflet.forms.widgets import LeafletWidget
 from .models import Criteria
 from django.contrib.auth.models import User
 
@@ -12,5 +13,6 @@ class CriteriaForm(geoforms.ModelForm):
     class Meta:
         model = Criteria
         exclude = ['user', 'unit']
-        widgets = {field: geoforms.RadioSelect() for field in fields_name}
-        widgets['geom'] = geoforms.OSMWidget()
+        widgets = {field: geoforms.Select() for field in fields_name}
+        #geoforms.RadioSelect()
+        widgets['geom'] = LeafletWidget()

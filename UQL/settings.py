@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'VGI',
     'leaflet',
-    'crispy_forms',
+    'widget_tweaks',
+    # 'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,12 @@ AUTH_USER_MODEL = 'VGI.MyUser'
 
 # crispy-forms setting
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (35.747363, 51.375244),
+    'DEFAULT_ZOOM': 13,
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 18,
+    'ATTRIBUTION_PREFIX': 'Powered by django-leaflet',
+    'SCALE': 'both',
+}

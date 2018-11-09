@@ -8,30 +8,11 @@ from . models import Criteria
 from .forms import CriteriaForm
 
 
-
-
-
-
-
-
-
-
-#////////////////////// not good ////////////
-class PersonCreateView(CreateView):
-	model = Criteria
-	fields = '__all__'
-	success_url = reverse_lazy('home')
-
-
-#@login_required
-def new_data(request):
+def home(request):
     if request.method == 'POST':
         form = CriteriaForm(request.POST)
         if form.is_valid():
-            data = form.save(commit=False)
-            data.user = request.user
-            data.save()
-            return redirect('products_list')
+            return HttpResponse('form is valid')
     else:
         form = CriteriaForm()
-    return render(request, 'VGI/add_data.html', {'form': form})
+    return render(request, 'VGI/home.html', {'form': form})

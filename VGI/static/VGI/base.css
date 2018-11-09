@@ -1,0 +1,32 @@
+#header{
+  background-color: lightblue;
+  width:100%;
+  height:100px;
+  text-align: center;
+}
+#sidebar-left{
+  float:left;
+  width:30%;
+  background-color: red;
+}
+#main{
+  float:left;
+  width:70%;
+  background-color: lightgray;
+}
+#sidebar-right{
+  float:left;
+  width:0%;
+  background-color: red;
+}
+#footer{
+  clear:both;
+  border: 1px solid #333333;
+  height: 50px;
+  width: 100%;
+  text-align: center;
+  background-color: #333333;
+}
+#sidebar-left, #main, #sidebar-right{
+  min-height: 600px
+}

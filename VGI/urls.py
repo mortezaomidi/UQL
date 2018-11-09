@@ -4,6 +4,5 @@ from .import views
 
 urlpatterns = [
     url('accounts/', include('django.contrib.auth.urls')),
-    url('add/', views.PersonCreateView.as_view(), name='add'),
-    url('home/', views.new_data, name='new_data'),
+    url('home/', views.home, name="home"),
 ]

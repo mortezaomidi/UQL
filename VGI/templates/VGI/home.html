@@ -1,0 +1,49 @@
+{% extends 'VGI/base.html' %}
+
+{% load static %}
+{% load leaflet_tags %}
+{% load widget_tweaks %}
+
+
+{% block head %}
+  {{block.super}}
+  {{ form.media }}
+  {% leaflet_js plugins="forms" %}
+  {% leaflet_css plugins="forms" %}
+  <link rel="stylesheet" href="{% static "VGI/LIB/css/bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "VGI/LIB/css/jquery-ui.css" %}">
+  <script type="text/javascript" src="{% static "VGI/LIB/js/jquery-1.12.4.js" %}">  </script>
+  <script type="text/javascript" src="{% static "VGI/LIB/js/jquery-ui.12.4.js" %}">  </script>
+  <script type="text/javascript" src="{% static "VGI/LIB/js/bootstrap.min.js" %}"> </script>
+
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script> $( function() {$( "#accordion" ).accordion();});</script>
+{% endblock %}
+
+
+  {% block header %} </br><h1> VGI-based UQOL </h1> {% endblock %}
+  {% block sidebar-left %}
+    <div id="accordion">
+      <h3>Section 1</h3>
+      <div>
+      </div>
+      <h3>Section 2</h3>
+      <div>
+      </div>
+      <h3>Section 3</h3>
+      <div>
+        <ul>
+          <li>List item one</li>
+          <li>List item two</li>
+          <li>List item three</li>
+        </ul>
+      </div>
+      <h3>Section 4</h3>
+      <div>
+      </div>
+    </div>
+  {% endblock %}
+
+  {% block main %}
+    {{form}}
+  {% endblock %}

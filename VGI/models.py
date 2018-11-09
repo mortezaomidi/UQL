@@ -30,7 +30,7 @@ class Unit(geomodel.Model):
     region = geomodel.ForeignKey(Region, on_delete=geomodel.CASCADE)
 
     def __str__(self):
-        return str(self.unit_code)
+        return self.name + "- منطقه " + str(self.region)
 
 
 @python_2_unicode_compatible  # only if you need to support Python 2
@@ -122,8 +122,6 @@ class Criteria(geomodel.Model):
             + self.q37 + self.q38 + self.q39 + self.q310 + self.q311 + self.q312 \
             + self.q313 + self.q314 + self.q315 + self.q316 + self.q317
 
-    def get_absolute_url(self):
-        return reverse('home', kwargs={'pk': self.pk})
 
     def save(self, *args, **kwargs):
         self.unit = Unit.objects.get(geom__contains=Unit.objects.get(geom__contains=self.geom).geom)
