@@ -8,8 +8,8 @@
 {% block head %}
   {{block.super}}
   {{ form.media }}
-  {% leaflet_js plugins="forms" %}
-  {% leaflet_css plugins="forms" %}
+  {% leaflet_js plugins="ALL" %}
+  {% leaflet_css plugins="ALL" %}
   <link rel="stylesheet" href="{% static "VGI/home.css" %}">
   <link rel="stylesheet" href="{% static "VGI/LIB/css/bootstrap.min.css" %}">
   <link rel="stylesheet" href="{% static "VGI/LIB/css/jquery-ui.css" %}">
@@ -28,6 +28,62 @@
     });
   } );
   </script>
+  <script type="text/javascript">
+      window.addEventListener("map:init", function (e) {
+
+          function onEachFeature_region(feature, layer) {
+              // does this feature have a property named popupContent?
+              if (feature.properties && feature.properties.model) {
+                  layer1.bindPopup(feature.properties.model);
+              }
+          }
+
+          function onEachFeature_neighbourhood(feature, layer) {
+              // does this feature have a property named popupContent?
+              if (feature.properties && feature.properties.name) {
+                  layer2.bindPopup(feature.properties.name);
+              }
+          }
+
+          function onEachFeature_criteria(feature, layer) {
+              // does this feature have a property named popupContent?
+              if (feature.properties && feature.properties.create_date) {
+                  layer3.bindPopup(feature.properties.create_date);
+              }
+          }
+
+          var detail = e.detail;
+          //L.marker([50.5, 30.5]).addTo(detail.map);
+          var layer1 = L.geoJson(false, {onEachFeature: onEachFeature_region});
+          detail.map.addLayer(layer1);
+          $.getJSON("{% url 'data_region' %}", function (data) {
+              layer1.addData(data);
+          });
+
+          var layer2 = L.geoJson(false, {onEachFeature: onEachFeature_neighbourhood});
+          detail.map.addLayer(layer2);
+          $.getJSON("{% url 'data_unit' %}", function (data) {
+              layer2.addData(data);
+          });
+
+
+
+          var layer3 = L.geoJson(false, {onEachFeature: onEachFeature_criteria});
+          detail.map.addLayer(layer3);
+          $.getJSON("{% url 'data_criteria' %}", function (data) {
+              layer3.addData(data);
+          });
+
+
+          var maps = {
+                "Regions": layer1,
+                "Neighbourhood": layer2,
+                "Other user data": layer3
+            };
+          L.control.layers(maps).addTo(detail.map)
+      }, false);
+  </script>
+
 {% endblock %}
 
 {% block header %} <br><h1> VGI-based UQOL </h1> {% endblock %}

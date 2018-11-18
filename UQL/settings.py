@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'VGI',
     'leaflet',
     'widget_tweaks',
+    'djgeojson',
     # 'crispy_forms',
 ]
 
