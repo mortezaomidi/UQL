@@ -10,6 +10,7 @@
   {{ form.media }}
   {% leaflet_js plugins="forms" %}
   {% leaflet_css plugins="forms" %}
+  <link rel="stylesheet" href="{% static "VGI/home.css" %}">
   <link rel="stylesheet" href="{% static "VGI/LIB/css/bootstrap.min.css" %}">
   <link rel="stylesheet" href="{% static "VGI/LIB/css/jquery-ui.css" %}">
   <script type="text/javascript" src="{% static "VGI/LIB/js/jquery-1.12.4.js" %}">  </script>
@@ -17,33 +18,77 @@
   <script type="text/javascript" src="{% static "VGI/LIB/js/bootstrap.min.js" %}"> </script>
 
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script> $( function() {$( "#accordion" ).accordion();});</script>
+  <script>
+  $( function() {
+    $( "#accordion" ).accordion({
+        collapsible: true,
+        active: 'none',
+        autoHeight: false,
+        navigation: true
+    });
+  } );
+  </script>
 {% endblock %}
 
+{% block header %} <br><h1> VGI-based UQOL </h1> {% endblock %}
 
-  {% block header %} </br><h1> VGI-based UQOL </h1> {% endblock %}
-  {% block sidebar-left %}
-    <div id="accordion">
-      <h3>Section 1</h3>
-      <div>
-      </div>
-      <h3>Section 2</h3>
-      <div>
-      </div>
-      <h3>Section 3</h3>
-      <div>
-        <ul>
-          <li>List item one</li>
-          <li>List item two</li>
-          <li>List item three</li>
-        </ul>
-      </div>
-      <h3>Section 4</h3>
-      <div>
-      </div>
-    </div>
-  {% endblock %}
+{% block sidebar-left %}
+  <form action="" method="post">
+    {% csrf_token %}
+      {# Include the hidden fields #}
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+      <div id="accordion" >
+          <h3>Enviromental</h3>
+          <div class="widget">
+            {% for field in form %}
+              {% if "q1" in field.label_tag %}
+                {{ field.errors }}
+                {{ field.label_tag }} <br> {{ field }} <hr>
+                {% if field.help_text %}  <p class="help">{{ field.help_text|safe }}</p>{% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <h3>Socio-economic</h3>
+          <div>
+            {% for field in form %}
+              {% if "q2" in field.label_tag %}
+                {{ field.errors }}
+                {{ field.label_tag }} <br> {{ field }} <hr>
+                {% if field.help_text %}  <p class="help">{{ field.help_text|safe }}</p>{% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <h3>Phisical</h3>
+          <div>
+            {% for field in form %}
+              {% if "q3" in field.label_tag %}
+                {{ field.errors }}
+                {{ field.label_tag }} <br> {{ field }} <hr>
+                {% if field.help_text %}  <p class="help">{{ field.help_text|safe }}</p>{% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <h3>Statistic</h3>
+          <div>
+            <ul>
+              <li>List item one</li>
+              <li>List item two</li>
+              <li>List item three</li>
+            </ul>
+          </div>
+        </div>
+      {% endblock %}
 
-  {% block main %}
-    {{form}}
-  {% endblock %}
+{% block main %}
+      {% for field in form %}
+        {% if "geom" in field.label_tag %}
+          {{ field.errors }}
+           {{ field }}
+          {% if field.help_text %}  <p class="help">{{ field.help_text|safe }}</p>{% endif %}
+        {% endif %}
+      {% endfor %}
+    <input id="btn_submit" type="submit" value="Submit">
+  </form>
+{% endblock %}

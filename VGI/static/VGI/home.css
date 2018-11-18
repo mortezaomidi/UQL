@@ -1,0 +1,15 @@
+#id_geom-map {
+  height: 620px;
+}
+
+
+#btn_submit {
+  position: absolute;
+  left: 185px;
+  top: 690px;
+}
+
+
+#accordion .ui-accordion-content {
+    max-height: 450px;
+}

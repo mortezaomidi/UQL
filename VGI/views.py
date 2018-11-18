@@ -9,10 +9,14 @@ from .forms import CriteriaForm
 
 
 def home(request):
+    user = request.user
     if request.method == 'POST':
         form = CriteriaForm(request.POST)
         if form.is_valid():
-            return HttpResponse('form is valid')
+            criteria = form.save(commit=False)
+            criteria.user = user
+            criteria.save()
+            return HttpResponse('form is valid: and save. thanks')
     else:
         form = CriteriaForm()
     return render(request, 'VGI/home.html', {'form': form})
